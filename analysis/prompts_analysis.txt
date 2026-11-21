@@ -1,0 +1,47 @@
+== 기본 ==
+쿼리 수: 4000, 고유 프롬프트: 4000
+글자수 min/median/max: 104/195/378
+단어수 min/median/max: 17/36/72
+문장 수 분포: [(1, 297), (2, 1963), (3, 1122), (4, 458), (5, 109), (6, 31), (7, 17), (8, 3)]
+
+== 개수 표현 ==
+ one(10732), two(948), three(38)
+'one'만 쓰는 프롬프트: 3097 (77.4%)
+프롬프트당 'One' 등장 횟수: [(0, 8), (1, 243), (2, 1488), (3, 1596), (4, 601), (5, 63), (6, 1)]
+
+== 색 ==
+ brown(928), white(803), black(768), yellow(743), green(725), red(681), beige(677), orange(560), gray(535), blue(468), purple(452), pink(409)
+프롬프트당 색 단어 수: [(0, 478), (1, 606), (2, 1949), (3, 729), (4, 172), (5, 43), (6, 11), (7, 7), (8, 5)]
+무늬: solid-colored(370), striped(370), polka-dotted(330), checkered(319), floral(55), patterned(35)
+
+== 관계 (포함하는 프롬프트 수) ==
+above: 693 (17.3%)
+below: 600 (15.0%)
+left of: 848 (21.2%)
+right of: 859 (21.5%)
+next to: 753 (18.8%)
+on/resting on: 543 (13.6%)
+wearing: 96 (2.4%)
+in front of: 0 (0.0%)
+behind: 0 (0.0%)
+holding: 159 (4.0%)
+under/beneath: 732 (18.3%)
+프롬프트당 관계 종류 수: [(0, 165), (1, 2531), (2, 1160), (3, 144)]
+
+== 스타일 ==
+ 3d render(797), photograph(792), render(420), flat illustration(351), watercolor painting(336), colored-pencil drawing(283), painting(245), oil painting(216), clay-style 3d render(192), drawing(134), 기타(131), sketch(103)
+== 시점 ==
+ overhead(1316), 기타(1027), side view(666), front view(423), from the front(260), viewed from the front(207), viewed from the side(93), from the side(8)
+== 조명 ==
+ side lighting(1008), warm indoor lighting(1004), soft diffuse lighting(1002), direct sunlight(980), 기타(4), diffuse lighting(2)
+
+== 장소 후보 ==
+ studio(1334), farm(194), park(159), living room(135), garden(127), bedroom(96), patio(70), dining room(69), meadow(68), street(56), kitchen(49), office(41), airport apron(40), pasture(39), parking lot(36), scene(33), oblique view(32), flat illustration(28), forest(28), classroom(28), watercolor painting(25), train platform(25), cafe(24), colored-pencil drawing(23), photograph(21) 
+(장소 추출 성공 3306/4000)
+
+== 객체 명사 후보 ==
+ person(431), that(309), backdrop(291), cabinet(184), bench(156), holds(150), bowl(149), scarf(146), shelf(138), helmet(137), motorcycle(131), desk(130), ball(124), tree(121), box(117), block(110), pot(110), table(106), open(102), stool(101), horse(100), parrot(92), pencil(89), bear(85), suitcase(82), container(79), armchair(75), skate(75), pitcher(74), cube(73), pen(72), chair(71), bed(70), screwdriver(69), shirt(69), cookie(67), cylinder(67), sofa(66), frame(65), rabbit(65) 
+(고유 245종)
+
+== 첫 문장 시작 3단어 ==
+ In a studio(343), A 3D render(137), A studio with(106), To the right(86), A flat illustration(86), A photograph shows(84), A watercolor painting(76), An oil painting(74), A colored-pencil drawing(73), Next to one(68), To the left(67), On a farm,(63)
