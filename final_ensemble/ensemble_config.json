@@ -1,0 +1,12 @@
+{
+  "arms": [
+    "S0",
+    "S1_noaux"
+  ],
+  "use_pair": false,
+  "weights": {
+    "S0": 0.5,
+    "S1_noaux": 0.5
+  },
+  "width": 8
+}

@@ -1,0 +1,52 @@
+{
+  "archive_bytes": 2820678204,
+  "archive_sha256": "9c73ec58ff28b630359b4037056974162dd123b5c6927c4c1cc5ca0a8868781e",
+  "inference_code": {
+    "ensemble_config.json": "b648ac3e99231318a204c69f6a6c491ee5aa069f7e5c36c7bdde635d6670eb6f",
+    "model.py": "8ee7dee362ae2e4c1bbf04200c133f243e64daba1cab15ef10b685a6ff3e1f49",
+    "requirements.txt": "043cd432a46d85809719ab646c7a7bd2b70ea4c0b80702a7443d8bcc54b233b6"
+  },
+  "model_files": {
+    "models/arms/C.safetensors": "0335ad78bf828c4eca5f40d3e481346bf5045483968a2f944c16b3df8ed34e3a",
+    "models/arms/S0.safetensors": "5a52f9589db48a0aae6e88c76b8144213dd58c3724648f1a6a3d5044e774c7bb",
+    "models/arms/S1_noaux.safetensors": "5b5689268688c08e5c8dee5030c3157a0dcd1cf74d37b3aeaf00c7e71c003244",
+    "models/blip/config.json": "3e6464c2ce7c54512ddb101c5e9a8e77f4c2d637be9e3d005667ccd4a34c6ef2",
+    "models/blip/model.safetensors": "6723a507df0defdccd074a4b2af6df3b92532c2bfaab66398c7744596c01a704",
+    "models/blip/preprocessor_config.json": "0aa66e2e9ac3ea3b5cd4388c35072e22db4e1cc1f96c7872bed07749c712ade1",
+    "models/blip/special_tokens_map.json": "b6d346be366a7d1d48332dbc9fdf3bf8960b5d879522b7799ddba59e76237ee3",
+    "models/blip/tokenizer.json": "d241a60d5e8f04cc1b2b3e9ef7a4921b27bf526d9f6050ab90f9267a1f9e5c66",
+    "models/blip/tokenizer_config.json": "86da6fdb761b02f73a05561aba71711c2d7c205fe1fd1744046173a410263925",
+    "models/blip/vocab.txt": "07eced375cec144d27c900241f3e339478dec958f92fddbc551f295c992038a3",
+    "models/pair_head.safetensors": "220465566d0e817e37a79421b6eabc5b43be1cd976e4614ea90cc5bd0c8ba6ad",
+    "models/siglip/config.json": "cd85b3d28829722820bcb89a2cfbb4160e55fd359249a3044da724166a8d9688",
+    "models/siglip/model.safetensors": "fdddcc00314513f9570af756294e1e3008d6b58bd3162bdb61fcce8e8ce695a6",
+    "models/siglip/preprocessor_config.json": "d11ccb80f15d358a11bdb070e92e2d889005874b7db15823d5f10d9b2533b14a",
+    "models/siglip/special_tokens_map.json": "2b6a1ff67a27e0df9ac0c7d93250fc0d87431c7b366b3d5669217104f9088a26",
+    "models/siglip/spiece.model": "1e5036bed065526c3c212dfbe288752391797c4bb1a284aa18c9a0b23fcaf8ec",
+    "models/siglip/tokenizer.json": "c6e405cb7c670d56636a9402c81023a55bc6c3c53d89cf02b92f5c5005bfe920",
+    "models/siglip/tokenizer_config.json": "d6423dae508cc3a129d22ea443841c111832a1a73125b8f25ea8736951698bcb"
+  },
+  "parts": [
+    {
+      "bytes": 939524096,
+      "name": "haikuthon-8243a71ee07a.part001",
+      "sha256": "8243a71ee07af6a1ed2556d73f743cd28a0ecda2cca588c7b584bdc82813e72e"
+    },
+    {
+      "bytes": 939524096,
+      "name": "haikuthon-80c3c6d20946.part002",
+      "sha256": "80c3c6d209462411fabc1adf67fdf0ea8ddbf439e7fd8fc640c443958aac09fd"
+    },
+    {
+      "bytes": 939524096,
+      "name": "haikuthon-48e9a3bea24b.part003",
+      "sha256": "48e9a3bea24b602779170ce6595131a58b01a728a0387808d2266dc538592c11"
+    },
+    {
+      "bytes": 2105916,
+      "name": "haikuthon-88682369b8b1.part004",
+      "sha256": "88682369b8b166beff10e11a675104a4d26efc91764aa15a65f33cb0b1075406"
+    }
+  ],
+  "schema": 1
+}

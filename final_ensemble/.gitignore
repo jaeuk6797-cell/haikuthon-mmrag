@@ -1,0 +1,8 @@
+/models/
+/release_assets/
+/restore-*/
+*.part[0-9][0-9][0-9]
+__pycache__/
+*.zip
+*.safetensors
+.venv/

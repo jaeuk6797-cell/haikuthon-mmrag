@@ -1,0 +1,241 @@
+{
+  "population": "800 original held-out S0 candidate lists. For 797 lists, archived logits were aligned by image ID. For the three differing lists, both exported arms were scored anew in float32 on CPU using official PNGs, a shared vision encoder, and the original S0 Top-8. This is not an official server run.",
+  "per_query_csv_sha256": {
+    "sibling": "cac33b80082772848edf68a1ca6071b44a4779c723b843709c514c461809dcd0",
+    "aux": "6fe36b3e8c786a0ba9b17f652533b6506e083cf96146b860c13c0e93a40f4404"
+  },
+  "torch": "2.6.0+cpu",
+  "arms_sha256": {
+    "models/arms/S0.safetensors": "5a52f9589db48a0aae6e88c76b8144213dd58c3724648f1a6a3d5044e774c7bb",
+    "models/arms/S1_noaux.safetensors": "5b5689268688c08e5c8dee5030c3157a0dcd1cf74d37b3aeaf00c7e71c003244"
+  },
+  "fusion_rule": "Equal-weight per-query population z-scores over all eight candidates, stable descending sort.",
+  "metrics": {
+    "S0": {
+      "count": 800,
+      "top1_count": 527,
+      "top5_count": 794,
+      "recall1": 0.65875,
+      "recall5": 0.9925,
+      "ndcg5": 0.8539983693620395,
+      "score": 0.7563741846810197
+    },
+    "S1_noaux": {
+      "count": 800,
+      "top1_count": 534,
+      "top5_count": 792,
+      "recall1": 0.6675,
+      "recall5": 0.99,
+      "ndcg5": 0.8548801673255386,
+      "score": 0.7611900836627693
+    },
+    "fusion": {
+      "count": 800,
+      "top1_count": 541,
+      "top5_count": 795,
+      "recall1": 0.67625,
+      "recall5": 0.99375,
+      "ndcg5": 0.8620092921377764,
+      "score": 0.7691296460688882
+    }
+  },
+  "transitions_from": {
+    "S0": {
+      "gained_top1": 42,
+      "lost_top1": 28,
+      "gained_2_to_1": 36
+    },
+    "S1_noaux": {
+      "gained_top1": 46,
+      "lost_top1": 39,
+      "gained_2_to_1": 42
+    }
+  },
+  "recomputed": {
+    "0422": {
+      "s0_pool": [
+        "0312",
+        "0422",
+        "0113",
+        "3363",
+        "2347",
+        "2512",
+        "1490",
+        "3131"
+      ],
+      "S0_margins_cpu": [
+        1.838188886642456,
+        11.5585355758667,
+        -14.1730375289917,
+        -4.897317409515381,
+        -15.861793518066406,
+        -14.463827133178711,
+        -15.799249649047852,
+        -15.937629699707031
+      ],
+      "S1_noaux_margins_cpu": [
+        5.349648475646973,
+        9.729963302612305,
+        -14.176262855529785,
+        -11.352415084838867,
+        -15.009264945983887,
+        -14.120229721069336,
+        -14.897237777709961,
+        -15.130167007446289
+      ],
+      "archive_max_abs_difference_on_overlap": {
+        "S0": 0.015923261642456055,
+        "S1_noaux": 0.012571334838867188
+      },
+      "pair_reordered": false,
+      "fusion_pair_rank": 1,
+      "fusion_pair_order": [
+        "0422",
+        "0312",
+        "3363",
+        "0113",
+        "2512",
+        "1490",
+        "2347",
+        "3131"
+      ],
+      "S0_rank": 1,
+      "S1_noaux_rank": 1,
+      "fusion_rank": 1,
+      "fusion_order": [
+        "0422",
+        "0312",
+        "3363",
+        "0113",
+        "2512",
+        "1490",
+        "2347",
+        "3131"
+      ]
+    },
+    "1211": {
+      "s0_pool": [
+        "1211",
+        "2441",
+        "0722",
+        "0260",
+        "1374",
+        "2641",
+        "1668",
+        "3500"
+      ],
+      "S0_margins_cpu": [
+        5.257423400878906,
+        1.20260488986969,
+        9.272518157958984,
+        -2.775893211364746,
+        -8.669729232788086,
+        -7.321919918060303,
+        -10.393841743469238,
+        -1.3234961032867432
+      ],
+      "S1_noaux_margins_cpu": [
+        8.841878890991211,
+        1.2961809635162354,
+        8.01076602935791,
+        -0.21088352799415588,
+        -6.437770366668701,
+        -1.8339924812316895,
+        -9.83356761932373,
+        -1.6938756704330444
+      ],
+      "archive_max_abs_difference_on_overlap": {
+        "S0": 0.02577972412109375,
+        "S1_noaux": 0.03702735900878906
+      },
+      "pair_reordered": false,
+      "fusion_pair_rank": 2,
+      "fusion_pair_order": [
+        "0722",
+        "1211",
+        "2441",
+        "0260",
+        "3500",
+        "2641",
+        "1374",
+        "1668"
+      ],
+      "S0_rank": 2,
+      "S1_noaux_rank": 1,
+      "fusion_rank": 2,
+      "fusion_order": [
+        "0722",
+        "1211",
+        "2441",
+        "0260",
+        "3500",
+        "2641",
+        "1374",
+        "1668"
+      ]
+    },
+    "3866": {
+      "s0_pool": [
+        "0574",
+        "0561",
+        "0908",
+        "3866",
+        "1361",
+        "2374",
+        "1247",
+        "1163"
+      ],
+      "S0_margins_cpu": [
+        -4.454709053039551,
+        -6.124240398406982,
+        -1.7788302898406982,
+        -2.741258144378662,
+        -3.0112690925598145,
+        -13.015663146972656,
+        -12.23670482635498,
+        -11.789436340332031
+      ],
+      "S1_noaux_margins_cpu": [
+        1.2922203540802002,
+        0.8561564683914185,
+        3.085422992706299,
+        -4.778659343719482,
+        -2.5007119178771973,
+        -6.838230133056641,
+        -6.6174774169921875,
+        -3.187284231185913
+      ],
+      "archive_max_abs_difference_on_overlap": {
+        "S0": 0.02110767364501953,
+        "S1_noaux": 0.024678707122802734
+      },
+      "pair_reordered": false,
+      "fusion_pair_rank": 5,
+      "fusion_pair_order": [
+        "0908",
+        "0574",
+        "0561",
+        "1361",
+        "3866",
+        "1163",
+        "1247",
+        "2374"
+      ],
+      "S0_rank": 2,
+      "S1_noaux_rank": 6,
+      "fusion_rank": 5,
+      "fusion_order": [
+        "0908",
+        "0574",
+        "0561",
+        "1361",
+        "3866",
+        "1163",
+        "1247",
+        "2374"
+      ]
+    }
+  },
+  "recomputed_organizer_images_and_prompts_verified": true,
+  "organizer_manifest_sha256": "ae2760591e737993c0a5a7e241d4e10d438c35db82b24ab52512424e79590864"
+}

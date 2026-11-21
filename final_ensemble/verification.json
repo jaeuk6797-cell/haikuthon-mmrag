@@ -1,0 +1,75 @@
+{
+  "archive_sha256": "9c73ec58ff28b630359b4037056974162dd123b5c6927c4c1cc5ca0a8868781e",
+  "archive_bytes": 2820678204,
+  "entries": 21,
+  "requirements": {
+    "transformers": "4.51.3",
+    "sentencepiece": "0.2.3",
+    "safetensors": "0.8.0",
+    "pillow": "13.0.0",
+    "protobuf": "7.36.2",
+    "timm": "1.0.31",
+    "tokenizers": "0.21.4",
+    "huggingface-hub": "0.36.2",
+    "sentence-transformers": "4.1.0"
+  },
+  "config": {
+    "arms": [
+      "S0",
+      "S1_noaux"
+    ],
+    "use_pair": false,
+    "weights": {
+      "S0": 0.5,
+      "S1_noaux": 0.5
+    },
+    "width": 8
+  },
+  "validated_stage": "fresh_offline_cpu_inference",
+  "crc": true,
+  "query_count": 2,
+  "candidate_count": 8,
+  "sample_type": "provided_pngs",
+  "starterkit_interface": true,
+  "single_vs_batched": true,
+  "common_pool_score_parity": true,
+  "native_margin_max_absolute_error": {
+    "S0": 0.0,
+    "S1_noaux": 0.0,
+    "A": 9.5367431640625e-07,
+    "C": 3.5762786865234375e-07
+  },
+  "optional_pair_checked": true,
+  "optional_A_C_checked": true,
+  "no_external_socket": true,
+  "top5_by_query": {
+    "q_000": [
+      "0000",
+      "0004",
+      "0005",
+      "0003",
+      "0001"
+    ],
+    "q_001": [
+      "0001",
+      "0002",
+      "0003",
+      "0007",
+      "0000"
+    ]
+  },
+  "installed_pins_match": true,
+  "software": {
+    "python": "3.12.10",
+    "system": "Windows",
+    "torch": "2.6.0",
+    "torchvision": "0.21.0",
+    "transformers": "4.51.3",
+    "safetensors": "0.8.0",
+    "pillow": "13.0.0",
+    "tokenizers": "0.21.4",
+    "huggingface-hub": "0.36.2"
+  },
+  "official_install_limits_verified": false,
+  "official_full_predict_verified": false
+}
