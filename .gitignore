@@ -1,0 +1,31 @@
+# data
+data/
+images/
+*.png
+*.jpg
+*.jpeg
+*.parquet
+*.jsonl
+starterkit/
+starterkit.zip
+
+# model weights and packaged submissions
+*.safetensors
+*.pt
+*.pth
+*.bin
+*.ckpt
+*.zip
+checkpoints/
+outputs/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# misc
+.DS_Store
+.env
