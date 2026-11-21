@@ -99,6 +99,7 @@ def main():
     ap.add_argument("--unfreeze", type=int, default=4)
     ap.add_argument("--hard", type=int, default=1, help="1: 같은 객체 집합끼리 묶음, 0: 무작위 배치")
     ap.add_argument("--seed", type=int, default=42)
+    ap.add_argument("--split", default="random", choices=["random", "group"], help="group: 객체 조합 단위 분할")
     a = ap.parse_args()
 
     sys.path.insert(0, str(a.kit))
@@ -110,7 +111,31 @@ def main():
 
     processor = AutoProcessor.from_pretrained(a.kit / "sample_submission" / "models", local_files_only=True)
     pix_all = cache_pixels(train + valid, processor, str(a.data.parent / "pix_cache.pt"))
-    pix_tr, pix_va = pix_all[:len(train)], pix_all[len(train):]
+    if a.split == "group":
+        # 객체 조합(라벨 집합) 단위로 분할: 검증 쿼리의 조합이 학습에 하나도 없게 한다.
+        allr = train + valid
+        gk = [object_key(r["prompts"]) for r in allr]
+        by = defaultdict(list)
+        for i, k in enumerate(gk):
+            by[k].append(i)
+        gl = sorted(by)
+        random.Random(42).shuffle(gl)
+        va_idx = []
+        for k in gl:
+            if len(va_idx) >= 800:
+                break
+            va_idx += by[k]
+        vs = set(va_idx)
+        tr_idx = [i for i in range(len(allr)) if i not in vs]
+        train, valid = [allr[i] for i in tr_idx], [allr[i] for i in va_idx]
+        pix_tr, pix_va = pix_all[tr_idx], pix_all[va_idx]
+        tk = {object_key(r["prompts"]) for r in train}
+        ov = sum(object_key(r["prompts"]) in tk for r in valid)
+        print("그룹 분할: 학습 %d / 검증 %d, 검증 중 학습과 조합이 겹치는 수 %d" % (len(train), len(valid), ov), flush=True)
+        a.out.mkdir(parents=True, exist_ok=True)
+        (a.out / "valid_ids.json").write_text(json.dumps([r["id"] for r in valid]))
+    else:
+        pix_tr, pix_va = pix_all[:len(train)], pix_all[len(train):]
 
     keys = [object_key(r["prompts"]) for r in train]
     sizes = defaultdict(int)
@@ -138,6 +163,8 @@ def main():
     scaler = torch.amp.GradScaler("cuda")
 
     best, log = -1.0, []
+    s0, r0, _ = validate(net, processor, pix_va, valid, dev)
+    print("에포크 0 (제로샷) | 평균 %.4f | Recall@1 %.4f" % (s0, r0), flush=True)
     for ep in range(1, a.epochs + 1):
         net.train()
         if a.hard:
