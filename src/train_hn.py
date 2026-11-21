@@ -11,6 +11,7 @@ import argparse
 import json
 import math
 import random
+import re
 import sys
 import time
 from collections import defaultdict
@@ -55,6 +56,36 @@ def tok(processor, texts, dev):
     return processor(text=texts, padding="max_length", truncation=True, return_tensors="pt").to(dev)
 
 
+# 규칙 기반 hard-negative 문장 (팀원 group22의 train_siglip2_kaggle.py 방식을 옮김):
+# 같은 종류 속성 두 개를 맞바꾸거나 관계 방향을 뒤집어, 같은 이미지에 어긋나는 문장을 만든다.
+GROUPS = [
+    "red orange yellow green blue purple pink brown black white gray grey beige silver gold".split(),
+    "striped polka-dotted solid-colored plaid checkered floral".split(),
+    "metal plastic wooden wood glass ceramic leather fabric paper stone".split(),
+    "round square oval rectangular triangular".split(),
+    "open closed".split(),
+    "standing sitting lying".split(),
+]
+FLIPS = [("left", "right"), ("above", "below")]
+
+
+def _swap(p, a, b):
+    return re.sub(r"\b(%s|%s)\b" % (re.escape(a), re.escape(b)), lambda m: b if m.group(0) == a else a, p)
+
+
+def perturb(p, rng):
+    opts = []
+    for g in GROUPS:
+        present = [w for w in g if re.search(r"\b%s\b" % re.escape(w), p)]
+        if len(present) >= 2:
+            opts.append(tuple(rng.sample(present, 2)))
+    opts += [f for f in FLIPS if re.search(r"\b(%s|%s)\b" % f, p)]
+    if not opts:
+        return None
+    q = _swap(p, *rng.choice(opts))
+    return q if q != p else None
+
+
 def make_batches(rows, keys, bs, rng):
     groups = defaultdict(list)
     for i, k in enumerate(keys):
@@ -90,7 +121,7 @@ def validate(net, processor, pix, rows, dev):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--kit", type=Path, required=True)
+    ap.add_argument("--kit", type=Path, default=None, help="없으면 스타터킷 없이 HF 모델 ID와 prompts.jsonl을 직접 사용")
     ap.add_argument("--data", type=Path, required=True)
     ap.add_argument("--out", type=Path, default=Path("ckpt_hn"))
     ap.add_argument("--epochs", type=int, default=5)
@@ -98,18 +129,30 @@ def main():
     ap.add_argument("--lr", type=float, default=2e-5)
     ap.add_argument("--unfreeze", type=int, default=4)
     ap.add_argument("--hard", type=int, default=1, help="1: 같은 객체 집합끼리 묶음, 0: 무작위 배치")
+    ap.add_argument("--all", type=int, default=0, help="1: 4000쌍 전부로 학습(검증 없음, 마지막 에포크 저장)")
+    ap.add_argument("--perturb", type=int, default=0, help="1: 속성 맞바꾼 문장을 음성으로 추가")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--split", default="random", choices=["random", "group"], help="group: 객체 조합 단위 분할")
     a = ap.parse_args()
 
-    sys.path.insert(0, str(a.kit))
-    from train import MODEL_ID, load_and_split
-    train, valid = load_and_split(a.data, 42)
+    if a.kit:
+        sys.path.insert(0, str(a.kit))
+        from train import MODEL_ID, load_and_split
+        train, valid = load_and_split(a.data, 42)
+    else:
+        MODEL_ID = "google/siglip-base-patch16-224"
+        rows = [json.loads(l) for l in open(a.data / "prompts.jsonl", encoding="utf-8")]
+        for r in rows:
+            r["image_path"] = str(a.data / "images" / ("%s.png" % r["id"]))
+        train, valid = rows[:3200], rows[3200:]
     dev = "cuda"
     torch.manual_seed(a.seed)
     rng = random.Random(a.seed)
 
-    processor = AutoProcessor.from_pretrained(a.kit / "sample_submission" / "models", local_files_only=True)
+    if a.kit:
+        processor = AutoProcessor.from_pretrained(a.kit / "sample_submission" / "models", local_files_only=True)
+    else:
+        processor = AutoProcessor.from_pretrained(MODEL_ID)
     pix_all = cache_pixels(train + valid, processor, str(a.data.parent / "pix_cache.pt"))
     if a.split == "group":
         # 객체 조합(라벨 집합) 단위로 분할: 검증 쿼리의 조합이 학습에 하나도 없게 한다.
@@ -134,6 +177,10 @@ def main():
         print("그룹 분할: 학습 %d / 검증 %d, 검증 중 학습과 조합이 겹치는 수 %d" % (len(train), len(valid), ov), flush=True)
         a.out.mkdir(parents=True, exist_ok=True)
         (a.out / "valid_ids.json").write_text(json.dumps([r["id"] for r in valid]))
+    elif a.all:
+        train, valid = train + valid, (train + valid)[:64]
+        pix_tr, pix_va = pix_all, pix_all[:64]
+        print("전체 학습: %d쌍 (검증 점수는 학습 데이터라 의미 없음)" % len(train), flush=True)
     else:
         pix_tr, pix_va = pix_all[:len(train)], pix_all[len(train):]
 
@@ -177,11 +224,22 @@ def main():
         for b in batches:
             if len(b) < 4:
                 continue
-            t = tok(processor, [train[i]["prompts"] for i in b], dev)
+            texts = [train[i]["prompts"] for i in b]
+            if a.perturb:
+                texts += [q for q in (perturb(x, rng) for x in texts) if q]
+            t = tok(processor, texts, dev)
             px = pix_tr[b].to(dev)
             opt.zero_grad(set_to_none=True)
             with torch.autocast("cuda", dtype=torch.float16):
-                loss = net(**t, pixel_values=px, return_loss=True).loss
+                if a.perturb:
+                    iv = torch.nn.functional.normalize(net.get_image_features(pixel_values=px).pooler_output.float(), dim=-1)
+                    tv = torch.nn.functional.normalize(net.get_text_features(**t).pooler_output.float(), dim=-1)
+                    lg = tv @ iv.T * net.logit_scale.exp() + net.logit_bias
+                    lab = -torch.ones_like(lg)
+                    lab[:len(b)] += 2 * torch.eye(len(b), device=dev)
+                    loss = -torch.nn.functional.logsigmoid(lab * lg).sum() / len(b)
+                else:
+                    loss = net(**t, pixel_values=px, return_loss=True).loss
             scaler.scale(loss).backward()
             scaler.unscale_(opt)
             torch.nn.utils.clip_grad_norm_(params, 1.0)
@@ -193,7 +251,7 @@ def main():
         log.append({"epoch": ep, "loss": tot / len(train), "score": score, "recall1": r1, "sec": time.time() - t0})
         print("에포크 %d | loss %.4f | 평균 %.4f | Recall@1 %.4f | %.0f초" % (
             ep, tot / len(train), score, r1, time.time() - t0), flush=True)
-        if score > best:
+        if score > best or a.all:
             best = score
             a.out.mkdir(parents=True, exist_ok=True)
             net.save_pretrained(a.out)

@@ -1,0 +1,32 @@
+{
+ "K": 10,
+ "method": "B",
+ "lam": 1.0,
+ "kinds": null,
+ "itm": {
+  "use": false
+ },
+ "owl": {
+  "use": true,
+  "thr": 0.1,
+  "margin": 0.03,
+  "start_before_sec": 600,
+  "stop_after_sec": 740,
+  "kinds": [
+   "left_of",
+   "above",
+   "on",
+   "inside",
+   "rides",
+   "next_to"
+  ],
+  "top_n": 3
+ },
+ "color": {
+  "use": true,
+  "mu": 0.5,
+  "thr": 0.1,
+  "pad": 0.1,
+  "start_before_sec": 680
+ }
+}
