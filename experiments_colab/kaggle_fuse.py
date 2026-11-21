@@ -40,7 +40,7 @@ o.save_pretrained(M / 'owl')
 OwlViTProcessor.from_pretrained(OID).save_pretrained(M / 'owl')
 del o
 gc.collect()
-json.dump({'K': 10, 'method': 'B', 'lam': 3.2, 'itm': {'use': False}}, open(M / 'haiku_config.json', 'w'))
+json.dump({'K': 10, 'method': 'B', 'lam': 3.2, 'itm': {'use': False}, 'owl': {'use': True}, 'color': {'use': True}}, open(M / 'haiku_config.json', 'w'))
 
 sys.path.insert(0, str(S2))
 import importlib.util
@@ -133,7 +133,7 @@ def cfg(lam, owl=True, color=True, itm=True, w=(1.0, 1.0)):
 
 MODE['k'] = 10
 runs = [('E (S 없음)', cfg(0, itm=False))] + \
-       [('E + S z-융합 lam=%g' % l, cfg(l)) for l in (0.05, 0.2, 1.0, 5.0)] + \
+       [('E + S z-융합 lam=%g' % l, cfg(l)) for l in (0.2, 1.0, 5.0)] + \
        [('S만(조건·색·OWL 끔) lam=5', cfg(5.0, owl=False, color=False))]
 res_all = []
 for name, c in runs:
